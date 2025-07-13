@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fogazzaria Brasil</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="icon" type="image/png" href="icons/icon-192x192.png" />
+    <meta name="theme-color" content="#0077b6" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Montserrat", sans-serif;
+      }
+
+      body {
+        background-color: #f8f9fa;
+        color: #333;
+      }
+
+      header {
+        background-color: #0077b6;
+        color: white;
+        text-align: center;
+        padding: 1rem;
+        position: relative;
+      }
+
+      header img {
+        height: 120px;
+        width: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 0.5rem;
+      }
+
+      .btn-endereco {
+        background-color: white;
+        color: #0077b6;
+        font-size: 0.85rem;
+        padding: 0.4rem 0.8rem;
+        border-radius: 25px;
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        text-decoration: none;
+        font-weight: bold;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        transition: background 0.3s, color 0.3s;
+      }
+
+      .btn-endereco:hover {
+        background-color: #00b4d8;
+        color: white;
+      }
+
+      .top-buttons {
+        background-color: #f1f1f1;
+        text-align: center;
+        padding: 1rem 0.5rem;
+      }
+
+      .btn-cardapio,
+      .btn-ifood {
+        display: inline-block;
+        padding: 0.75rem 1.5rem;
+        margin: 0.5rem;
+        font-size: 1.1rem;
+        font-weight: bold;
+        border-radius: 30px;
+        text-align: center;
+        text-decoration: none;
+      }
+
+      .btn-cardapio {
+        background-color: #ff5722;
+        color: white;
+      }
+
+      .btn-ifood {
+        background-color: #fff;
+        color: #e63946;
+        border: 3px solid #e63946;
+      }
+
+      .container {
+        padding: 1rem;
+        text-align: center;
+      }
+
+      .title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin: 1rem 0;
+      }
+
+      .btn {
+        display: inline-block;
+        padding: 0.75rem 1.5rem;
+        margin: 0.5rem;
+        font-size: 1rem;
+        font-weight: bold;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: 0.3s;
+        text-decoration: none;
+      }
+
+      .btn-instagram {
+        background: linear-gradient(
+          45deg,
+          #f09433,
+          #e6683c,
+          #dc2743,
+          #cc2366,
+          #bc1888
+        );
+        color: white;
+      }
+
+      .btn-whatsapp {
+        background-color: #25d366;
+        color: white;
+      }
+
+      .btn-canal {
+        background-color: #075e54;
+        color: white;
+      }
+
+      .btn-pedir-agora {
+        background-color: #e63946;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        text-decoration: none;
+        font-weight: bold;
+        display: block;
+        margin-top: 1rem;
+        width: 100%;
+      }
+
+      .produtos-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        padding: 1rem;
+      }
+
+      .produto {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: transform 0.3s;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .produto:hover {
+        transform: translateY(-5px);
+      }
+
+      .produto img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+      }
+
+      .produto .info {
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+      }
+
+      .produto .info h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .produto .info p {
+        font-size: 1rem;
+        color: #e63946;
+      }
+
+      footer {
+        background-color: #0077b6;
+        color: white;
+        text-align: center;
+        padding: 1rem;
+        margin-top: 2rem;
+      }
+
+      .horario {
+        font-size: 0.95rem;
+        margin-top: 0.5rem;
+      }
+
+      /* =================   Estilos do modal ===================*/
+
+      * {
+        box-sizing: border-box;
+      }
+
+      #modalOverlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        padding: 20px;
+      }
+
+      #modalBox {
+        background: white;
+        padding: 25px 20px;
+        border-radius: 8px;
+        width: 100%;
+        max-width: 420px;
+        max-height: 80vh;
+        overflow-y: auto;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        font-family: Arial, sans-serif;
+        color: #333;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #modalMessage {
+        white-space: pre-wrap;
+        font-size: 1em;
+        line-height: 1.5em;
+        margin-bottom: 25px;
+        width: 100%;
+        text-align: center;
+      }
+
+      #btnClose {
+        background-color: #ccc;
+        color: #333;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 28px;
+        font-size: 1em;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-bottom: 20px;
+        display: none;
+      }
+
+      #btnClose:hover {
+        background-color: #999;
+        color: white;
+      }
+
+      #navButtons {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        width: 100%;
+      }
+
+      button.navBtn {
+        cursor: pointer;
+        padding: 10px 24px;
+        font-size: 1em;
+        border: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        color: white;
+        flex: 1 1 120px;
+        max-width: 150px;
+      }
+
+      #btnPrev {
+        background-color: #6c757d;
+        visibility: hidden;
+      }
+
+      #btnPrev:hover {
+        background-color: #5a6268;
+      }
+
+      #btnNext {
+        background-color: #007bff;
+      }
+
+      #btnNext:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <!--MODAL-->
+    <div id="modalOverlay">
+      <div id="modalBox">
+        <div id="modalMessage"></div>
+        <button id="btnClose">Fechar</button>
+        <div id="navButtons">
+          <button id="btnPrev" class="navBtn">Voltar</button>
+          <button id="btnNext" class="navBtn">Próximo</button>
+        </div>
+      </div>
+    </div>
+<!--FIM MODAL-->
+    <header>
+      <a
+        href="https://www.google.com/maps?q=R.+Moreno,+6+-+Jardim+Boa+Vista,+Caruaru+-+PE,+55014-287"
+        target="_blank"
+        class="btn-endereco"
+        >📍 Ver Endereço</a
+      >
+      <img
+        src="https://fogazzariabrasil.com.br/img/logodemo.jpg"
+        alt="Logo Fogazzaria"
+      />
+      <h1>FOGAZZARIA BRASIL</h1>
+      <div class="horario">
+        Funcionamento: Terça a Domingo, das 18h às 23h <br />
+        <strong>🚫 Fechamos às segundas-feiras</strong>
+      </div>
+    </header>
+
+    <div class="top-buttons">
+      <a
+        href="https://app.cardapioweb.com/fogazzaria_brasil_"
+        class="btn-cardapio"
+        >🍕 CARDÁPIO ONLINE</a
+      >
+      <a
+        href="https://www.ifood.com.br/delivery/caruaru-pe/fogazzaria-brasil-mauricio-de-nassau/dd7da2cf-7449-4deb-8bf2-a108f8de208a?UTM_Medium=share"
+        target="_blank"
+        class="btn-ifood"
+        >📲 PEÇA PELO IFOOD</a
+      >
+    </div>
+
+    <div class="container">
+      <a
+        href="https://www.instagram.com/fogazzabrasil"
+        target="_blank"
+        class="btn btn-instagram"
+        >📷 @fogazzariabrasil</a
+      >
+
+      <!--
+      <a
+        href="https://wa.me/5581982862314"
+        target="_blank"
+        class="btn btn-whatsapp"
+        >💬 WhatsApp: (81) 98286-2314</a
+      >
+      -->
+      <a
+        href="https://whatsapp.com/channel/0029Vb6wytLAInPbOGU0tp2m"
+        target="_blank"
+        class="btn btn-canal"
+        >📢 Canal no WhatsApp</a
+      >
+
+
+      <div class="title">DESTAQUES DO NOSSO CARDÁPIO</div>
+      <div class="produtos-container">
+        <div class="produto">
+          <img
+            src="https://fogazzariabrasil.com.br/img/202.png"
+            alt="PIZZAS DE 20"
+          />
+          <div class="info">
+            <h3>PIZZAS DE 20</h3>
+            <p>R$ 20,00</p>
+            <a
+              href="https://app.cardapioweb.com/fogazzaria_brasil_?cat_id=266166"
+              class="btn-pedir-agora"
+              >Peça Agora</a
+            >
+          </div>
+        </div>
+        <div class="produto">
+          <img
+            src="https://fogazzariabrasil.com.br/img/fogazzaimagem.jpg"
+            alt="FOGAZZA PROMOÇÃO"
+          />
+          <div class="info">
+            <h3>FOGAZZAS</h3>
+            <p>R$ 20,00</p>
+            <a
+              href="https://app.cardapioweb.com/fogazzaria_brasil_?cat_id=266168"
+              class="btn-pedir-agora"
+              >Peça Agora</a
+            >
+          </div>
+        </div>
+        <div class="produto">
+          <img
+            src="https://storage.googleapis.com/prod-cardapio-web/uploads/item/image/2285066/9690b9079a185bfb-303c-49a5-9907-3959791ee9e1-medium.jpg"
+            alt="PIZZA SLIM 6 FATIAS (MÉDIA)"
+          />
+          <div class="info">
+            <h3>Combo - PIZZAS DE 20 + REFRIGERANTE</h3>
+            <p>R$ 25,00</p>
+            <a
+              href="https://app.cardapioweb.com/fogazzaria_brasil_?cat_id=266165"
+              class="btn-pedir-agora"
+              >Peça Agora</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      FOGAZZARIA BRASIL<br />
+      © <span id="ano"></span>
+    </footer>
+    <script>
+      document.getElementById("ano").textContent = new Date().getFullYear();
+      // MODAL
+
+      const avisos = [
+        `ATENÇÃO\n\n🚚 Entregas todos os dias das 18h às 23h.\n \nOs pedidos são realizados exclusivamente pelo nosso site ou presencialmente em nossa loja.\nAgradecemos a compreensão! 💻🏪`,
+        `⚠ Atenção: Pagamento via PIX\n\nAo escolher PIX, é necessário finalizar o pagamento em até 10 minutos para que o pedido seja confirmado.\n⚠ Pedidos com pagamento pendente não são aceitos e o sistema irá cancelar automaticamente após esse período.`,
+      ];
+
+      let etapaAtual = 0;
+
+      const modalOverlay = document.getElementById("modalOverlay");
+      const modalMessage = document.getElementById("modalMessage");
+      const btnNext = document.getElementById("btnNext");
+      const btnPrev = document.getElementById("btnPrev");
+      const btnClose = document.getElementById("btnClose");
+
+      function atualizarBotoes() {
+        btnPrev.style.visibility = etapaAtual > 0 ? "visible" : "hidden";
+        btnNext.style.display =
+          etapaAtual < avisos.length - 1 ? "inline-block" : "none";
+        btnClose.style.display = etapaAtual >= 1 ? "inline-block" : "none";
+      }
+
+      function mostrarAviso(index) {
+        modalMessage.textContent = avisos[index];
+        atualizarBotoes();
+      }
+
+      btnNext.addEventListener("click", () => {
+        if (etapaAtual < avisos.length - 1) {
+          etapaAtual++;
+          mostrarAviso(etapaAtual);
+        }
+      });
+
+      btnPrev.addEventListener("click", () => {
+        if (etapaAtual > 0) {
+          etapaAtual--;
+          mostrarAviso(etapaAtual);
+        }
+      });
+
+      btnClose.addEventListener("click", () => {
+        modalOverlay.style.display = "none";
+      });
+
+      mostrarAviso(etapaAtual);
+      //FIM MODAL
+    </script>
+  </body>
+</html>
